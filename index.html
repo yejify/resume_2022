@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smileyj</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="#"> -->
+    <style>
+        * {padding: 0;margin: 0;list-style: none;}
+        body {background-color: rgb(2, 182, 201);user-select: none;}
+        .screen_out {text-indent: -9999px; overflow: hidden;}
+        .screen_out2 {display: none;}
+        .white_bg {background-color: white;padding: 20px;}
+        summary {display: none;}
+
+        /* header */
+        header {position: absolute;left: 380px;top: 62px;}
+        header li {float: left;margin-right: 80px;}
+        header li a {color: #fff; font-size: 18px;text-decoration: none;display: block;}
+        header li a:hover {border-bottom: 2px solid #fff;transition: ease all .3s;}
+        /* fade in 사용하기 */
+        
+        /* header menu */
+        .menu_on {position: fixed;left: 50px;top:400px;z-index: 1000;}
+        .menu_on li {float: none;padding: 10px; list-style:disc;color: #fff;}
+        .menu_on a {position: absolute;mix-blend-mode: difference;color: #fff;}
+        .menu_on a:hover {border: none;}
+
+        /* logo */
+        #logo {width: 200px;height: 42px; position: absolute;left:100px;top: 76px;cursor: pointer;}
+        .logo_light {background:no-repeat center/60px url(public_html/logo_light_wh.png);width: 70px;height: 100px;margin: 100px 0 0 80px;cursor: pointer;}
+        .logo_light_blue {background:no-repeat center/60px url(public_html/logo_light_blue.png);width: 70px;height: 100px;margin: 100px 0 0 80px;cursor: pointer;}
+
+        /* main */
+        #main_img {width: 1130px;height: 750px;position: absolute;right: 70px;top: 190px;}
+        main>p:nth-child(4)>span:first-child {font-size: 230px;color: white;position: absolute;top: 180px;left: 220px;z-index: 100;}
+        main>p:nth-child(4)>span:nth-child(3){font-size: 220px;color: transparent;-webkit-text-stroke-width: 3px;-webkit-text-stroke-color: #D1ED5D;position: absolute;top: 450px;left: 220px;z-index: 100;}
+        main>p:nth-child(4)>span:nth-child(5) {font-size: 120px;color: #D1ED5D;position: absolute;top: 790px;left: 500px;z-index: 100;}
+
+        /* about me */
+        .about_me {margin-top: 1080px;}
+        .about_me img {width: 160px;margin:-85px 0 50px 500px;}
+        .about_me>p:nth-child(3) {font-size: 30px;font-weight: bold;margin: -254px 0 0 750px;}
+        .about_me>p:nth-child(4) {font-size: 20px;margin: 10px 0 0 750px;}
+        .about_me>p:nth-child(5) {font-size: 18px;margin: 28px 0 0 750px;}
+
+        /* 마인드 */
+        #mind {padding-left:100px;margin: 60px auto 0 auto;}
+        #mind li {height:10px;background-color:#c8e0e2; max-width:300px;margin:40px auto;position: relative;}
+        #mind span:first-child {position:absolute;left:-100px;top:-6px;font-size: 20px;}
+        #mind span:nth-child(2) {position: absolute;font-size:0;display: block; height:10px;background-color:#02B6C9;width:0;transition:ease all .8s;}
+        #mind li:nth-child(2) span:nth-child(2) {transition-delay: 100ms;}
+        #mind li:nth-child(3) span:nth-child(2) {transition-delay: 200ms;}
+        #mind li:nth-child(4) span:nth-child(2) {transition-delay: 300ms;}
+        #mind li:nth-child(1) span:nth-child(3) {position: absolute;right: -60px;top: -5px;font-size: 20px;}
+        #mind li:nth-child(2) span:nth-child(3) {position: absolute;right: -60px;top: -5px;font-size: 20px;}
+        #mind li:nth-child(3) span:nth-child(3) {position: absolute;right: -60px;top: -5px;font-size: 20px;}
+        #mind li:nth-child(4) span:nth-child(3) {position: absolute;right: -60px;top: -5px;font-size: 20px;}
+
+
+        /* 원형 퍼센트 */
+        #skill {padding:50px; text-align: center;display: flex;flex-wrap: wrap;justify-content: center;gap: 40px;margin-bottom: 50px;}
+        #skill>li {
+            --p:0;		/* 백분율 크기 */
+            --b:10px;	/* 그래프 두께 */
+            --c:rgb(2, 182, 201);	/* 그래픽 색 */
+            --w:100px;	/* 그래프의 크기 */
+            width:var(--w);
+            aspect-ratio:1;	/*가로 세로비율을 1:1로 */
+            position:relative;
+            display:inline-block;
+            text-align: center; /*세로, 가로 정렬의 약식표현 */
+            font-size:25px;
+            line-height: var(--w);
+            user-select: none;
+        }
+        #skill>li::before,
+        #skill>li::after {
+            content:"";
+            position:absolute;
+            border-radius:50%;
+        }
+        /*	가상요소로 그래프 끝을 원형으로 표현 + 배경그라디언트로 그래프 표현 */
+        #skill>li::before {
+            inset:0;
+            background:
+            conic-gradient(var(--c) calc(var(--p)*1%),#c8e0e2 0);
+            -webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),blue calc(100% - var(--b)));
+            mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));  
+        }
+        #skill>li>span {position: absolute;top: 80%;left: 50%;transform:translate(-50%,0);}
+
+        /* 모달팝업 */
+        #blind {position:fixed;left:0; top:0; width:100%; height:100vh; background:rgba(0,0,0,.8); z-index:1000;backdrop-filter: blur(5px);display: none;}
+        .list details {display:none;position: fixed;left:50%; top:50%; transform:translate(-50%,-50%);border:5px solid #ccc;z-index: 1200;background:#999;padding:20px;}
+        .list li.open details {display:block;}
+        .list>li.open {cursor: pointer;}
+        .list>li.open>details>img {width: 100%;}
+        .list>li.open>details>p {background:rgba(0,0,0,.5);color:#fff;font-weight: bold;}
+        .list>li.open>details>a {display: block;width: 100%;background:rgba(0,0,0,.5);color:#fff;}
+        .list>li.open>details>a:hover {color:#D1ED5D;}
+
+        /* list */
+        section {overflow: hidden;min-height: 700px;display: flex;max-width: 1500px;margin: auto;}
+        .list {display:inline-flex;box-sizing: border-box;align-items: center;}
+        .list li {width:150px; height:200px; margin: 50px; box-sizing:border-box;overflow: hidden;position: relative}
+        .list>li>a>img {-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;pointer-events: none;width: 400px;height: 500px;object-fit: cover;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);}
+
+
+        /* counter*/
+        section+div {position: relative;height: 20px;}
+        .counter {display: flex;width: 144px;height: 20px;position: absolute;top: 0;right: 10px;}
+        .divider {width: 110px;height: 3px;background-color: #D1ED5D;display:block;margin: 8px;}
+
+        /* fmail */
+        #contact_h {height: 900px;}
+        fieldset {border:none;}
+        #contact {max-width: 1300px; margin:0 auto;overflow:hidden;position: relative;}
+        #contact p {font-size:16px; font-weight: 400;color: white;}
+        #contact p:first-child {font-size:36px; font-weight:900; color:#02B6C9; line-height: 130%;margin-top: 150px;}
+        #contact p:nth-child(2) {line-height: 150%;color:#02B6C9;font-size: 23px;}
+        #contact p:nth-child(3) {line-height: 150%;margin-top:30px;color:#02B6C9;}
+        #contact>div {display:flex;flex-wrap: wrap;gap: 200px;}
+        #contact>div>div {margin-left: 100px;}
+        #contact fieldset {background-color: #02B6C9;width: 600px;height: 555px;padding-top: 20px;}
+
+        #contact .form_base {border: 0;border-bottom: 1px solid #fff;background: transparent;height: 46px;width: 500px;padding: 0 20px;line-height: 100%;display: block;font-size: 16px;margin: 15px auto;font-family: 'Noto Sans KR',sans-serif;font-weight: 600;outline: none;}
+        #contact .form_base:focus {border-color:#D1ED5D;}
+        #contact .form_base.alert {border-color:#D1ED5D;}
+        #contact .form_base.alert+span {color:#ef7f7f;font:12px/12px dotum,돋움,sans-serif; position: absolute;margin:-40px 0 0 30px;}
+        #contact ::placeholder {font-family:'Noto Sans KR',sans-serif; font-weight:400;color:#fff;font-size:14px}
+        #contact textarea.form_base {padding-top:15px;min-height:180px;resize: none;}
+        #contact input[name=answer] {display:none;}
+        #contact .fa {font-size:22px;color:#fff; cursor: pointer;margin-right:10px;}
+        #contact .fa.fa-comment-o {margin-top:-3px;position: absolute;}
+        #contact .fa.fa-check {position: absolute;right:10px;color: #D1ED5D;margin-top:-50px;display:none;padding-right: 7px;}
+        #contact input:checked+.fa {color:#D1ED5D;}
+        #contact #msg~p {padding:5px 30px;}
+        #contact #msg~div {position: absolute;margin:-25px 0 0 140px;}
+        #contact button.form_base {border: 1px solid #fff;background:#02B6C9;color:#fff;text-transform: uppercase;font-family:'Noto Sans KR'; font-size:16px; cursor: pointer;margin:50px 20px 20px 30px; width:540px;}
+        #contact textarea+span {display:none;}
+        #contact textarea.alert+span {display:block;}
+        
+        /* footer */
+        footer {text-align: center;justify-content: center;margin-bottom: 25px;}
+        footer p {font-size: 10px;color:#7dd1d8}
+        footer p:nth-child(2) {font-size: 20px;margin: 10px;color: #fff;}
+
+        @media screen and (max-width:1500px) {      /* 내 맥북 */
+            /* main */
+            #main_img {width: 900px;height: auto;right: 50px;top: 170px;}
+            main>p:nth-child(4) {font-size: 180px;top: 190px;left: 150px;}
+            main>p:nth-child(5) {font-size: 170px;-webkit-text-stroke-width: 3px;top: 390px;left: 150px;}
+            main>p:nth-child(6) {font-size: 100px;top: 670px;left: 400px;}
+
+            /* .logo_light */
+            .logo_light {margin: 60px 0 0 60px;}
+            .logo_light_blue {margin: 60px 0 0 60px;}
+
+            /* about me */
+            .about_me {margin-top: 830px;}
+            .about_me img {width: 160px;margin:80px 0 50px 500px;}
+            .about_me>p:nth-child(3) {font-size: 30px;font-weight: bold;margin: -254px 0 0 750px;}
+            .about_me>p:nth-child(4) {font-size: 20px;margin: 10px 0 0 750px;}
+            .about_me>p:nth-child(5) {font-size: 18px;margin: 28px 0 0 750px;}
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h2 class="screen_out">카테고리</h2>
+    <nav>
+        <ul>
+            <li><a href="#">About me</a></li>
+            <li><a href="#">Web</a></li>
+            <li><a href="#">Video</a></li>
+            <li><a href="#">Graphic</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <!-- <div></div> -->
+    <h1 class="screen_out">smileyj</h1>
+    <svg id="logo" data-name="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1169.24 249.3"><defs><style>.cls-1{fill:#edefef;}</style></defs><g id="logo"><path class="cls-1" d="M0,223.28l14.52-16.83C29,220.68,48.78,230,70.26,230c26.13,0,41.23-12.48,41.23-29.9,0-20.32-14.81-26.13-34-34.26L49.94,153.61C31.07,146.06,9,132.7,9,104.53,9,75.5,35.14,54,71.42,54c23.82,0,44.72,9.58,58.65,23.51L117.3,93.21c-12.49-11-27-17.71-46.75-17.71C48.49,75.5,33.68,86,33.68,103.08c0,18.3,17.71,25,34,31.36l26.72,11.91c23.51,9.29,42.09,22.64,42.09,50.8,0,30.2-25.55,54.3-67.36,54.3C41.23,251.45,17.13,240.42,0,223.28Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M175.67,57.5h29.61L232,138.8l9.29,30.77h1.17l9-30.77,27-81.3h29.61V248H284.84V152.73c0-18.58,2.9-51.09,4.06-67.36l-7.36-.9-10.75,37.16L250,197.44H232.57l-26.71-74.9-11-37.17h-.58c1.74,16.27,4.06,48.78,4.06,67.36V248H175.67Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M356.55,227.35h47.33V78.11H356.55V57.5h119V78.11H428.27V227.35h47.32V248h-119Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M542.08,57.5h24.11V227.35h94.07V248H542.08Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M710.49,57.5H828.37V78.11h-93.5v59.52h79v20.62h-79v69.1h96.4V248H710.49Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M926.51,180,862.64,57.5h25.84l28.45,56.33c7.26,14.81,13.93,29.32,21.77,44.42h1.17c7.55-15.1,15.1-29.61,22.35-44.42L989.8,57.5h25L950.9,180V248H926.51Z" transform="translate(0 -2.15)"/><path class="cls-1" d="M1049,219.8,1064.42,205c11,16.85,26.13,25,40.94,25,27,0,39.2-13.64,39.2-45V77.82H1065V57.21h104.23V187c0,35.42-16,64.45-63.29,64.45C1084.75,251.45,1062.39,241.58,1049,219.8Z" transform="translate(0 -2.15)"/><circle class="cls-1" cx="1076.71" cy="12.01" r="12.01"/><circle class="cls-1" cx="1157.23" cy="12.01" r="12.01"/></g></svg>
+
+    <h2 class="screen_out">main</h2>
+    <p id="txt"><span>Make</span><br><span>Smiley</span><br><span>AND PASS IT ON</span></p>
+    <img id="main_img" src="public_html/main.png">
+
+    <div class="white_bg about_me">
+        <h2 class="screen_out logo_light_blue">About me</h2>
+        <img src="public_html/about_me.jpeg">
+        <p>Kim yeji</p>
+        <p>1997.10.18</p>
+        <p>약력<br>2013.03~2016.02 숭덕여고 졸업<br>2016.03~2022.02 총신대 신학과 졸업<br>2022.03~2022.08 한국 IT아카데미 멀티미디어 혼합훈련과정 수료</p>
+        <h3 class="screen_out">My Skill</h3>
+        <ul id="mind">
+            <li><span>창조성</span><span>90</span><span>90</span></li>
+            <li><span>열정</span><span>95</span><span>95</span></li>
+            <li><span>순발력</span><span>95</span><span>95</span></li>
+            <li><span>책임감</span><span>90</span><span>90</span></li>
+        </ul>
+        <ul id="skill">
+            <li>95%<span>HTML5</span></li>
+            <li>95%<span>CSS3</span></li>
+            <li>90%<span>Ai</span></li>
+            <li>85%<span>Ps</span></li>
+            <li>75%<span>JS</span></li>
+            <li>60%<span>jquery</span></li>
+        </ul>
+    </div>
+
+
+    <h2 class="screen_out">Wep</h2>
+    <div id="blind"></div>
+    <section>
+        <div id="hidden_center"></div>
+        <ul class="list" id="list1">
+            <li>
+                <a href="public_html/wep_pr1.png" target="_blank"><img src="public_html/wep_pr1.png" alt="구글 홈페이지 모작"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/wep01.png" alt="구글 홈페이지 모작">
+                    <p>comment : 구글 홈페이지 모작</p>
+                    <p>tool : HTML5/CSS3</p>
+                    <p>work time : 3H</p>
+                    <a href="public_html/google.html" target="_blank">페이지 바로가기</a>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/wep_pr2.png" target="_blank"><img src="public_html/wep_pr2.png" alt="네이트 로그인페이지 모작"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/wep02.png" alt="네이트 로그인페이지 모작">
+                    <p>comment : 네이트 로그인페이지 모작</p>
+                    <p>tool : HTML5/CSS3/JS/JQUERY</p>
+                    <p>work time : 3H</p>
+                    <a href="public_html/nate.html" target="_blank">페이지 바로가기</a>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/wep_pr3.png" target="_blank"><img src="public_html/wep_pr3.png" alt="다음 로그인페이지 모작"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/wep03.png" alt="다음 로그인페이지 모작">
+                    <p>comment : 다음 로그인페이지 모작</p>
+                    <p>tool : HTML5/CSS3/반응형</p>
+                    <p>work time : 6H</p>
+                    <a href="public_html/daum.html" target="_blank">페이지 바로가기</a>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/wep_pr4.png" target="_blank"><img src="public_html/wep_pr4.png" alt="D2 뉴스 페이지 모작"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/wep04.png" alt="D2 뉴스 페이지 모작">
+                    <p>comment : D2 NEWS 웹페이지 모작</p>
+                    <p>tool : HTML5/CSS3/반응형</p>
+                    <p>work time : 3H</p>
+                    <a href="public_html/d2news.html" target="_blank">페이지 바로가기</a>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/wep_pr5.png" target="_blank"><img src="public_html/wep_pr5.png" alt="D2 프로그램 페이지 모작"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/wep05.png" alt="D2 프로그램 페이지 모작">
+                    <p>comment : D2 Program 웹페이지 모작</p>
+                    <p>tool : HTML5/CSS3/반응형</p>
+                    <p>work time : 6H</p>
+                    <a href="public_html/d2program.html" target="_blank">페이지 바로가기</a>
+                </details>
+            </li>
+        </ul>
+    </section>
+    <div>
+        <div class="counter">
+            <p class="current">3</p>
+            <span class="divider"></span>
+            <p class="total"></p>
+        </div>
+    </div>
+
+    <h2 class="screen_out logo_light">video</h2>
+    <section>
+        <div id="hidden_center"></div>
+        <ul class="list" id="list2">
+            <li>
+                <a href="public_html/video_pr01.png" target="_blank"><img src="public_html/video_pr01.png" alt="신호등 뮤직비디오"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <video controls width="500px" src="public_html/video01.mp4" alt="신호등 뮤직비디오"></video>
+                    <p>comment : 신호등 창작 뮤직비디오</p>
+                    <p>tool : 프리미어프로</p>
+                    <p>work time : 12H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/video_pr02.png" target="_blank"><img src="public_html/video_pr02.png" alt="tomboy티저"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <video controls width="500px" src="public_html/video02.mp4" alt="tomboy티저"></video>
+                    <p>comment : tomboy티저</p>
+                    <p>tool : 프리미어프로, 에프터이펙트</p>
+                    <p>work time : 20H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/video_pr03.png" target="_blank"><img src="public_html/video_pr03.png" alt="연령고지 영상"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <video controls width="500px" src="public_html/video03.mp4" alt="연령고지 영상"></video>
+                    <p>comment : 연령고지 영상</p>
+                    <p>tool : C4D, 에프터이펙트, 프리미어 프로, 일러스트</p>
+                    <p>work time : 72H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/video_pr04.png" target="_blank"><img src="public_html/video_pr04.png" alt="현지에서 먹힐까 티저"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <video controls width="500px" src="public_html/video04.mp4" alt="현지에서 먹힐까 티저"></video>
+                    <p>comment : 현지에서 먹힐까 티저</p>
+                    <p>tool : 일러스트, 포토샵, 에프터이펙트</p>
+                    <p>work time : 60H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/video_pr05.png" target="_blank"><img src="public_html/video_pr05.png" alt="박카스광고영상"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <video controls width="500px" src="public_html/video05.mp4" alt="박카스광고영상"></video>
+                    <p>comment : 박카스광고영상</p>
+                    <p>tool : 프리미어프로, 에프터이펙트, 일러스트</p>
+                    <p>work time : 48H</p>
+                </details>
+            </li>
+        </ul>
+    </section>
+    <div>
+        <div class="counter">
+            <p class="current">3</p>
+            <span class="divider"></span>
+            <p class="total"></p>
+        </div>
+    </div>
+
+    <h2 class="screen_out logo_light">graphic</h2>
+    <section>
+        <div id="hidden_center"></div>
+        <ul class="list" id="list3">
+            <li>
+                <a href="public_html/graphic01.png" target="_blank"><img src="public_html/graphic01.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/graphic01.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/graphic02.png" target="_blank"><img src="public_html/graphic02.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/graphic02.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/graphic03.png" target="_blank"><img src="public_html/graphic03.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/graphic03.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/graphic04.png" target="_blank"><img src="public_html/graphic04.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/main.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/graphic05.png" target="_blank"><img src="public_html/graphic05.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/graphic05.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+            <li>
+                <a href="public_html/graphic06.png" target="_blank"><img src="public_html/graphic06.png"></a>
+                <details open>
+                    <summary>Details</summary>
+                    <img src="public_html/graphic06.png" alt="일러작품1">
+                    <p>comment : 타이포그래픽 디자인 모작으로 탄산느낌이 부각되도록 디자인</p>
+                    <p>tool : Illustrator</p>
+                    <p>work time : 1H</p>
+                </details>
+            </li>
+        </ul>
+    </section>
+    <div>
+        <div class="counter">
+            <p class="current">3</p>
+            <span class="divider"></span>
+            <p class="total"></p>
+        </div>
+    </div>
+
+
+    <div class="white_bg" id="contact_h">
+        <h2 class="screen_out logo_light_blue">Contact</h2>
+        <section id="contact">
+            <div>
+                <div>    
+                    <p>GET IN TOUCH</p>
+                    <p>please feel free to contact me.</p>
+                    <p>제 포트폴리오를 봐주셔서 감사합니다.
+                        <br>제 작업물이 마음에 드셨거나, 문의사항이 있으시다면
+                        <br>언제든 편하게 연락주시기 바랍니다.
+                        <br>우측의 양식으로 문의를 보내주시면
+                        <br>확인 후 바로 연락드리겠습니다.</p>
+                </div>
+                <fieldset>
+                    <legend class="screen_out">메일 보내기</legend>
+                    <label for="name" class="screen_out2">이름</label>
+                    <input type="text" placeholder="Name" id="user_name" class="form_base"><i class="fa fa-check" aria-hidden="true"></i>
+                    <label for="subject" class="screen_out2">제목</label>
+                    <input type="text" placeholder="Subject" id="subject" class="form_base"><i class="fa fa-check" aria-hidden="true"></i>
+                    <label for="msg" class="screen_out2">내용</label>
+                    <textarea placeholder="Massage" id="msg" class="form_base" required></textarea><span>* 5자 이상 입력해주세요!</span><i class="fa fa-check" aria-hidden="true"></i>
+                    <p title="선호하는 답변유형">Answer type</p>
+                    <div>
+                        <label><input type="checkbox" name="answer" value="이메일" checked><i class="fa fa-envelope-o" aria-hidden="true"></i><span class="screen_out2">이메일</span></label>
+                        <label><input type="checkbox" name="answer" value="전화"><i class="fa fa-phone" aria-hidden="true"></i><span class="screen_out2">전화</span></label>
+                        <label><input type="checkbox" name="answer" value="문자"><i class="fa fa-comment-o" aria-hidden="true"></i><span class="screen_out2">문자</span></label>
+                    </div>
+                    <button class="form_base" id="send_bt">send</button>
+                </fieldset>
+            </div>
+        </section>
+    </div>
+</main>
+<footer>
+    <h2 class="screen_out">사이트정보</h2>
+    <p>Copyright&copy;2022 김예지 All right reserved</p>
+    <p>본 사이트는 개인 포트폴리오 사이트로 제작되어 상업적 목적이 아닙니다.
+    <br>사용된 일부 이미지 및 폰트 등은 별도의 출처가 있음을 밝혀 드립니다.</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // 메뉴버튼
+    $("header nav a").click(function(){
+        var n = $("header nav a").index(this);
+        $("html").animate({scrollTop:$("main h2").eq(n+1).offset().top-100+"px"},500);
+        return false;
+    });
+
+    //메뉴 영역값
+    var h = $(window).height()/2;
+    var about_me = $("h2").eq(2).offset().top;
+    var Web = $("h2").eq(3).offset().top;
+    var video = $("h2").eq(4).offset().top;
+    var graphic = $("h2").eq(5).offset().top;
+    var contact = $("h2").eq(6).offset().top;
+    //리모컨 기능
+    $(window).scroll(function(){
+        var t = $(window).scrollTop();
+        //스크롤 다운시 메뉴 변경
+        if(t> 500) {
+            $("header").addClass("menu_on");
+        }else{
+            $("header").removeClass("menu_on");
+        };
+
+        //페이지네이트
+        if(t < about_me-h) {// home
+            $("header li").removeAttr("style");
+            $("header li a").removeAttr("style");
+        } else if(t >= about_me-h && t < Web-h) {// 메뉴1
+            $(".menu_on li:not(first-child)").css("color", "#02B6C9");//전체 영역
+            $(".menu_on li:not(first-child) a").css("color", "#02B6C9");
+            $(".menu_on li:first-child").css("color", "#D1ED5D");//현재 영역
+            $(".menu_on li:first-child a").css("color", "#D1ED5D");
+        } else if(t >= Web-h && t < video-h) {// 메뉴2
+            $(".menu_on li:not(:nth-child(2))").css("color", "#fff");//전체 영역
+            $(".menu_on li:not(:nth-child(2)) a").css("color", "#fff");
+            $(".menu_on li:nth-child(2)").css("color", "#D1ED5D");//현재 영역
+            $(".menu_on li:nth-child(2) a").css("color", "#D1ED5D");
+        }else if(t >= video-h && t < graphic-h) {// 메뉴3
+            $(".menu_on li:not(:nth-child(3))").css("color", "#fff");//전체 영역
+            $(".menu_on li:not(:nth-child(3)) a").css("color", "#fff");
+            $(".menu_on li:nth-child(3)").css("color", "#D1ED5D");//현재 영역
+            $(".menu_on li:nth-child(3) a").css("color", "#D1ED5D");
+        }else if(t >= graphic-h && t < contact-h) {// 메뉴4
+            $(".menu_on li:not(:nth-child(4))").css("color", "#fff");//전체 영역
+            $(".menu_on li:not(:nth-child(4)) a").css("color", "#fff");
+            $(".menu_on li:nth-child(4)").css("color", "#D1ED5D");//현재 영역
+            $(".menu_on li:nth-child(4) a").css("color", "#D1ED5D");
+        }else{//메뉴5
+            $(".menu_on li:not(:nth-child(5))").css("color", "#02B6C9");//전체 영역
+            $(".menu_on li:not(:nth-child(5)) a").css("color", "#02B6C9");
+            $(".menu_on li:nth-child(5)").css("color", "#D1ED5D");//현재 영역
+            $(".menu_on li:nth-child(5) a").css("color", "#D1ED5D");
+        };
+    });
+
+    //로고 홈버튼
+    $("h2").click(function(){
+        var t = $(window).scrollTop();
+        // alert(t);
+        $("html").animate({scrollTop: 0 + "px"},500);
+        return false;
+    });
+
+//메인 글씨
+//메인 글씨
+var txt = $("#txt").html();
+    var n=0;
+    var tag=false;
+    
+    setInterval(function(){
+        n++;
+        //태그인지 체크 
+        if(txt[n] == "<") tag=true;
+        if(txt[n] == ">") tag=false;
+        if(!tag && n >=0) {
+            var typing = txt.substring(0,n);
+            $("#txt").html(typing);
+        }
+        // 글이 다 써지고 지연후
+        if(n > txt.length+20) {
+            n = -5;
+        }
+
+    },50);
+
+    //마인드
+    var count = $("#mind li").length;
+    function mind() {
+        for(var i=0; i<count; i++) {
+            var txt = $("#mind li:eq("+i+") span:eq(1)").text();
+            $("#mind li:eq("+i+") span:eq(1)").width(txt+"%");
+        }
+    };
+
+    //스킬
+    var count = $("#skill>li").length;
+	var pie_do, pie_undo, skill=false;
+	function skill_pie(on) {
+		if(on=="on" && skill==false) { 
+			clearInterval(pie_undo);
+			clearInterval(pie_do);
+			skill == true;
+			pie_do = setInterval(function(){
+				$("#skill>li").each(function(index,item){
+					let p = parseInt($(item).text());
+					let now =$(item).css("--p");
+					let move = p-now;
+					if(move > 0) {
+						if(move < 0.4) {
+							move = 0;
+							$(item).css("--p", p);
+						} else {
+							$(item).css("--p", "+=" + (move *0.1));
+						}
+					} else {
+						skill = false;
+						clearInterval(pie_do);
+					}
+				})
+			},20)
+		} else if(on=="off" && skill==false) {
+			clearInterval(pie_undo);
+			clearInterval(pie_do);
+			skill == true;
+			pie_undo = setInterval(function(){
+				$("#skill>li").each(function(index,item){
+					let p = parseInt($(item).text());
+					let now = $(item).css("--p");
+					if(now > 0) {
+						if(now < 0.4) {
+							now = 0;
+							$(item).css("--p", 0);
+						} else {
+							$(item).css("--p", "-=" + (now *0.1));
+						}
+					} else {
+						skill = false;
+						clearInterval(pie_undo);
+					}
+				})
+			},20); 
+		}
+	};
+    
+    //마인드, 스킬 퍼센트 동작
+    $(window).scroll(function(){
+        var t = $(window).scrollTop();
+        if(t >= about_me-h && t < Web-h) {
+            mind();
+            skill_pie("on");
+        }else {
+            $("#mind span:nth-child(2)").width(0);
+            skill_pie("off");
+        }
+    });	
+
+    // 작품 리스트 순서
+    function paging() {
+        // 페이지 표현
+        var total = $("#list1>li").length;
+        // alert(now_page);
+        // $(".current").text(now_page);
+        $(".total").text(total);
+    };
+    paging();
+    // 작품리스트 드래그
+    var li_width = $("section>ul>li").width(); // 작품 기본 폭값
+	var li_height = $("section>ul>li").height(); // 작품 기본 높이값
+	var move_x = 0; // 드래그한 이동값용 변수
+	var move=false; // 드래그 여부용 변수
+	var ul_left = 0;
+    var hidden_left = $("#hidden_center").offset().left-50;
+	$("section").mousemove(function(e){
+		//e.clientX
+		if(move) {
+			var x = ul_left + (e.clientX - move_x);
+			if(move) $("section>ul").css("margin-left",x);
+			port_size();
+		}
+	});
+	$("section").mousedown(function(e){
+		move = true;
+		move_x = e.clientX;
+		ul_left = parseInt($("section>ul").css("margin-left"));
+	});
+    var ul_width = $("section>ul").width()
+	var limit_max = (ul_width*-1) + ul_width/2 + $("#hidden_center").width()/4;
+
+	$(document).mouseup(function(e){
+		move=false;
+		move_x =0;
+        var center_li = $("section>ul>li").index($(".on"))+1;
+        if(center_li) $(".current").text(center_li);
+        center_li = false;
+	});
+	function port_main() {
+		//$("li").eq(0).addClass("on");
+		var center_left = $("section").width() /2 - li_width /2 - 50;
+		var center_right = $("section").width() /2 + li_width /2 + 50;
+		var left = $("li").eq(0).offset().left;
+		//center 작품 찾기
+		
+	};
+	function port_size() {
+		//var w = li_width + (e.clientX - move_x);
+		var center = $("section").width() /2;
+    //		var center_right = $("section").width() /2 + li_width /2 + 50;
+		$("section>ul>li").each(function(index, item){
+			// 폭 = 가운데에서의 거리값
+			var w;
+			var h;
+			var l= $(item).offset().left+ ($(item).width()/2);
+			if(l < center) {
+				var x = center - l;
+				w = 400 - x*0.6;
+				h = 500 - x*0.6;
+				$(item).width(w);
+			} else if(l > center) {
+				var x =  l - center;
+				w = 400 - x*0.6;
+				h = 500 - x*0.6;
+			} else {
+				w =400;
+				h =500;
+			}
+			if(w < 150) w=150;
+			if(h < 200) h=200;
+			$(item).width(w);
+			$(item).height(h);
+		});
+        $("section>ul>li").each(function(index, item){
+            if($(item).width()> 290) {
+			     $(item).addClass("on");
+		    } else {
+			    $(item).removeClass("on");
+		    };
+        })
+	};
+
+    //리스트 가운데 오
+    $("section>ul").css("margin-left",hidden_left + "px");
+    port_size();
+    
+    // 모달팝업 열기
+    $(".list>li").click(function(){
+        $("#blind").fadeIn(100);
+        $(this).addClass("open");
+        // return false;   // 링크막기
+    });
+    // 모달팝업 닫기
+    $("#blind").click(function(){
+        $("#blind").fadeOut(100);
+        $(".list>li.open").removeClass("open");
+    });
+
+    //e-mail
+    $("#send_bt").click(function(){
+        var name = $("#user_name").val();
+        var subject = $("#subject").val();
+        var msg = $("#msg").val();
+        if(name.length < 2) {
+            $("#user_name").addClass("alert").focus();
+        } else if(subject.length < 2) {
+            $("#subject").addClass("alert").focus();
+        } else if(msg.length < 5) {
+            $("#msg").addClass("alert").focus();
+        } else {
+            email();
+        }
+    });
+    $("#user_name,#subject").keyup(function(){
+        var name = $(this).val().length;
+        if(name >= 2) {
+            $(this).removeClass("alert");
+            $(this).next().fadeIn();
+        } else {
+            $(this).addClass("alert");
+            $(this).next().fadeOut();
+        }
+    });
+    $("#msg").keyup(function(){
+        var msg = $(this).val().length;
+        if(msg >= 5) {
+            $(this).removeClass("alert");
+            $(this).next().next().fadeIn();
+        } else {
+            $(this).addClass("alert");
+            $(this).next().next().fadeOut();
+        }
+    });
+
+    function email() {
+        var param = {
+            title: $("#subject").val(),
+            name : $("#user_name").val(),
+            answer: $("input[name=answer]").val(),
+            content: $("#msg").val()
+        };
+        $.ajax({
+            url: 'public_html/fmail.php',
+            type: "POST",
+            async: true,
+            dataType: "json",
+            data: param,
+            success: function (data) {
+                if (data.result =="true") {
+                    alert("메일전송이 완료 되었습니다.");
+                    //$("#email").fadeOut("fast");
+                }
+            },
+            error: function (request, status, error) {
+                                    var msg = "ERROR<br>";
+                                    msg += request.status + "<br>" + request.responseText + "<br>" + error;
+            },
+            complete: function () {
+                //$("#email").fadeOut("fast"); 
+            }
+        });
+    }
+</script>
+</body>
+</html>
