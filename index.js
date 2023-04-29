@@ -64,25 +64,25 @@
 
 //메인 글씨
 //메인 글씨
-var txt = $("#txt").html();
-    var n=0;
-    var tag=false;
+// var txt = $("#txt").html();
+//     var n=0;
+//     var tag=false;
     
-    setInterval(function(){
-        n++;
-        //태그인지 체크 
-        if(txt[n] == "<") tag=true;
-        if(txt[n] == ">") tag=false;
-        if(!tag && n >=0) {
-            var typing = txt.substring(0,n);
-            $("#txt").html(typing);
-        }
-        // 글이 다 써지고 지연후
-        if(n > txt.length+20) {
-            n = -5;
-        }
+//     setInterval(function(){
+//         n++;
+//         //태그인지 체크 
+//         if(txt[n] == "<") tag=true;
+//         if(txt[n] == ">") tag=false;
+//         if(!tag && n >=0) {
+//             var typing = txt.substring(0,n);
+//             $("#txt").html(typing);
+//         }
+//         // 글이 다 써지고 지연후
+//         if(n > txt.length+20) {
+//             n = -5;
+//         }
 
-    },50);
+//     },50);
 
     //마인드
     var count = $("#mind li").length;
